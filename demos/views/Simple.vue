@@ -47,28 +47,9 @@ const extensions = [
   Paragraph,
   Heading.configure({ level: 5 }),
   Bold.configure({ bubble: true }),
-  Underline.configure({ bubble: true }),
-  Italic.configure({ bubble: true }),
-  Strike.configure({ bubble: true }),
-  Code,
   Link.configure({ bubble: true }),
   Image,
-  Blockquote,
-  TextAlign,
-  BulletList.configure({ bubble: true }),
-  OrderedList.configure({ bubble: true }),
   TaskList,
-  Indent,
-  HardBreak,
-  HorizontalRule.configure({ bubble: true }),
-  CodeView.configure({
-    codemirror,
-    codemirrorOptions: {
-      styleActiveLine: true,
-      autoCloseTags: true,
-    },
-  }),
-  Fullscreen,
   History,
 ];
 
