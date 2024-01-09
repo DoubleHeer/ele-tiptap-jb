@@ -64,6 +64,7 @@ const JAHoldLine = Node.create({
           componentProps: {
             command: () => {
                 editor.commands.setJAHoldLine({title:'测试标题栏'});
+                editor.commands.setParagraph()
             },
             icon: 'horizontal-rule',
             tooltip: t('editor.extensions.HorizontalRule.tooltip'),

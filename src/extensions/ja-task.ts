@@ -76,19 +76,22 @@ const JATask = Node.create({
             HTMLAttributes: {
               class: `node-${this.name}`,
             },
-            // button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
-            //     return {
-            //         component: CommandButton,
-            //         componentProps: {
-            //             command: () => {
-            //                 editor.commands.setJaTask({"jaTaskName": "测试任务没那s个"});
+            button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
+                return {
+                    component: CommandButton,
+                    componentProps: {
+                        command: () => {
+                            editor.commands.setJaTask({"jaTaskName": "测试任务没那s阿萨德个"});
+                            editor.commands.insertContent({
+                                type: 'paragraph'
+                            });
                             
-            //             },
-            //             icon: 'horizontal-rule',
-            //             tooltip: t('editor.extensions.HorizontalRule.tooltip'),
-            //         },
-            //     };
-            // }
+                        },
+                        icon: 'horizontal-rule',
+                        tooltip: t('editor.extensions.HorizontalRule.tooltip'),
+                    },
+                };
+            }
         };
     },
     addNodeView() {

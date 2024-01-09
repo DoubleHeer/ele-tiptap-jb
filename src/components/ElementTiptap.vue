@@ -242,16 +242,6 @@ export default defineComponent({
         editorProps: {
           attributes: {
             spellcheck: String(props.spellcheck),
-          },
-          handlePaste: function(view, event, slice) {
-            const items = Array.from(event.clipboardData?.items || []);      
-            for (const item of items) {
-              if (item.type.indexOf("image") === 0) {
-                //图片上传
-                return true; // handled
-              }
-            }
-            return false; // not handled use default behaviour
           }
         },
       });

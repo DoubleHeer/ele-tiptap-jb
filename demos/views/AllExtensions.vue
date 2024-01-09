@@ -99,7 +99,9 @@ const richAndToolsExtensions = [
   Text,
   Paragraph,
   Link,
-  Image,
+  Image.configure(
+
+  ),
   Iframe,
   Table.configure({ resizable: true }),
   HorizontalRule,
@@ -122,7 +124,12 @@ const onUpdate = (output) => {
 
 const content = {
   "type": "doc",
-  "content": [
+  "content": [    {
+      "type": "jaHoldLine",
+      "attrs": {
+        "title":"任务标题yi"
+      }
+    },
     {
       "type": "jaTask",
       "attrs": {
@@ -130,7 +137,12 @@ const content = {
         "jaTaskId":"12345"
       }
     },
-    
+    {
+      "type": "jaHoldLine",
+      "attrs": {
+        "title":"任务标题yi"
+      }
+    },
     {
       "type": "jaTask",
       "attrs": {
