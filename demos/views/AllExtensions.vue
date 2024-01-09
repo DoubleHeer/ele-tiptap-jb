@@ -1,16 +1,10 @@
 <template>
   <div class="el-tiptap-editor__wrapper">
-    <el-tiptap :extensions="textExtensions" content="Text Extensions" />
+    <el-tiptap :extensions="textExtensions" :content="content" output="json" @onUpdate="onUpdate" />
 
-    <el-tiptap
-      :extensions="paragraphExtensions"
-      content="Paragraph Extensions"
-    />
+    <el-tiptap :extensions="paragraphExtensions" content="Paragraph Extensions" />
 
-    <el-tiptap
-      :extensions="richAndToolsExtensions"
-      content="Rich And Tools Extensions"
-    />
+    <el-tiptap :extensions="richAndToolsExtensions" content="Rich And Tools Extensions" />
   </div>
 </template>
 
@@ -51,6 +45,8 @@ import {
   SelectAll,
   History,
   CodeView,
+  JATask,
+  JAHoldLine
 } from 'element-tiptap';
 
 import codemirror from 'codemirror';
@@ -74,6 +70,12 @@ const textExtensions = [
   Highlight.configure({ bubble: true }),
   FormatClear,
   History,
+  JATask.configure({
+    handleTask: (taskid) => {
+      console.log(taskid)
+    }
+  }),
+  JAHoldLine
 ];
 
 const paragraphExtensions = [
@@ -113,4 +115,38 @@ const richAndToolsExtensions = [
   }),
   History,
 ];
+
+const onUpdate = (output) => {
+  console.log(output);
+};
+
+const content = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "jaTask",
+      "attrs": {
+        "jaTaskName": "测试任务没那个",
+        "jaTaskId":"12345"
+      }
+    },
+    
+    {
+      "type": "jaTask",
+      "attrs": {
+        "jaTaskName": "测试任务没那个",
+        "jaTaskId":"33333"
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Text Extensions"
+        }
+      ]
+    }
+  ]
+}
 </script>

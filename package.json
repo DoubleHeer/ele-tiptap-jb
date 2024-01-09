@@ -1,8 +1,9 @@
 {
-  "name": "element-tiptap",
-  "version": "2.2.1",
-  "description": "🌸A modern WYSIWYG rich-text editor using tiptap and Element UI for Vue.js",
-  "author": "leecason",
+  "name": "ja-element-tiptap",
+  "version": "0.0.1",
+  "description": "基于element-tiptap二开的富文本编辑器",
+  "license": "MIT",
+  "author": "ywja",
   "scripts": {
     "dev": "vite",
     "demo:preview": "vite preview",
@@ -102,10 +103,9 @@
   },
   "resolutions": {},
   "bugs": {
-    "url": "https://github.com/Leecason/element-tiptap/issues"
+    "url": "https://github.com/DoubleHeer/ele-tiptap-jb/issues"
   },
-
-  "homepage": "https://github.com/Leecason/element-tiptapr#readme",
+  "homepage": "https://github.com/DoubleHeer/ele-tiptap-jb#readme",
   "keywords": [
     "editor",
     "wysiwyg",
@@ -117,10 +117,13 @@
     "element-ui",
     "element-plus"
   ],
-  "license": "MIT",
-
+  "lint-staged": {
+    "*.{js,vue}": [
+      "yarn lint"
+    ]
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Leecason/element-tiptap.git"
+    "url": "https://github.com/DoubleHeer/ele-tiptap-jb.git"
   }
 }
