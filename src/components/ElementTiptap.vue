@@ -118,7 +118,7 @@ export default defineComponent({
     },
     lang: {
       type: String,
-      default: 'en',
+      default: 'zh',
     },
     width: {
       type: [String, Number],

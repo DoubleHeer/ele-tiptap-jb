@@ -25,6 +25,7 @@ const Link = TiptapLink.extend({
       new Plugin({
         props: {
           handleClick(view: EditorView, pos: number) {
+            console.log('-------')
             const { schema, doc, tr } = view.state;
 
             const range = getMarkRange(doc.resolve(pos), schema.marks.link);
