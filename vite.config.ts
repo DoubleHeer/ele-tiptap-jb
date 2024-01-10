@@ -15,6 +15,9 @@ export default ({ mode }) => {
   const IS_DEMO = process.env.VITE_BUILD_TARGET === 'demo';
 
   return defineConfig({
+    define: {
+      '__VUE_PROD_HYDRATION_MISMATCH_DETAILS__': true,
+    },
     plugins: [
       vue({
         style: {

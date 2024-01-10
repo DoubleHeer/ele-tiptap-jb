@@ -5,23 +5,22 @@ import ColorPopover from '@/components/MenuCommands/ColorPopover.vue';
 import TextStyle from '@tiptap/extension-text-style';
 
 const Color = TiptapColor.extend({
+  nessesaryExtensions: [TextStyle],
   addOptions() {
     return {
       ...this.parent?.(),
+      buttonIcon: '',
       colors: COLOR_SET,
-      button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
+      button({ editor, extension }: { editor: Editor; extension: any; t: (...args: any[]) => string }) {
         return {
           component: ColorPopover,
           componentProps: {
             editor,
+            buttonIcon: extension.options.buttonIcon,
           },
         };
       },
     };
-  },
-
-  addExtensions() {
-    return [TextStyle];
   },
 });
 

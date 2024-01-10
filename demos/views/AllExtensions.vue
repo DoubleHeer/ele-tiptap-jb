@@ -1,6 +1,7 @@
 <template>
   <div class="el-tiptap-editor__wrapper">
-    <el-tiptap :extensions="textExtensions" :content="content" output="json" @onUpdate="onUpdate" />
+    <button @click="clickDemo">测试暴露editor调用</button>
+    <el-tiptap :extensions="textExtensions" :content="content" output="json" @onUpdate="onUpdate" @onCreate="onCreate" />
 
     <el-tiptap :extensions="paragraphExtensions" content="Paragraph Extensions" />
 
@@ -54,6 +55,7 @@ import 'codemirror/lib/codemirror.css'; // import base style
 import 'codemirror/mode/xml/xml.js'; // language
 import 'codemirror/addon/selection/active-line.js'; // require active-line.js
 import 'codemirror/addon/edit/closetag.js'; // autoCloseTags
+import { ref } from 'vue';
 
 const textExtensions = [
   Document,
@@ -72,6 +74,7 @@ const textExtensions = [
   History,
   JATask.configure({
     handleTask: (taskid) => {
+      console.log('------------')
       console.log(taskid)
     }
   }),
@@ -117,48 +120,65 @@ const richAndToolsExtensions = [
   }),
   History,
 ];
+const jbEditor = ref(null);
+const onCreate = (editor) => {
+  //在create方法中暴露editor
+  console.log(editor)
+  jbEditor.value = editor;
 
-const onUpdate = (output) => {
+}
+const clickDemo = () => {
+  console.log(jbEditor.value)
+
+  const options = {
+    jaTaskId: '1224',
+    jaTaskName: "任务id123"
+  }
+  jbEditor.value.commands.setJaTask(options)
+  jbEditor.value.commands.setJAHoldLine({ 'title': 'hhhh' });
+};
+const onUpdate = (output, editor) => {
   console.log(output);
+  console.log(editor.getHTML())
 };
 
 const content = {
   "type": "doc",
-  "content": [    {
-      "type": "jaHoldLine",
-      "attrs": {
-        "title":"任务标题yi"
-      }
-    },
-    {
-      "type": "jaTask",
-      "attrs": {
-        "jaTaskName": "测试任务没那个",
-        "jaTaskId":"12345"
-      }
-    },
-    {
-      "type": "jaHoldLine",
-      "attrs": {
-        "title":"任务标题yi"
-      }
-    },
-    {
-      "type": "jaTask",
-      "attrs": {
-        "jaTaskName": "测试任务没那个",
-        "jaTaskId":"33333"
-      }
-    },
-    {
-      "type": "paragraph",
-      "content": [
-        {
-          "type": "text",
-          "text": "Text Extensions"
-        }
-      ]
+  "content": [{
+    "type": "jaHoldLine",
+    "attrs": {
+      "title": "任务标题yi"
     }
+  },
+  {
+    "type": "jaTask",
+    "attrs": {
+      "jaTaskName": "测试任务没那个",
+      "jaTaskId": "12345"
+    }
+  },
+  {
+    "type": "jaHoldLine",
+    "attrs": {
+      "title": "任务标题yi"
+    }
+  },
+  {
+    "type": "jaTask",
+    "attrs": {
+      "jaTaskName": "测试任务没那个",
+      "jaTaskId": "33333"
+    }
+  },
+  {
+    "type": "paragraph",
+    "content": [
+      {
+        "type": "text",
+        "text": "Text Extensions"
+      }
+    ]
+  }
   ]
 }
 </script>

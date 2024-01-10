@@ -11,10 +11,12 @@
       editorClass,
     ]"
   >
-    <menu-bubble :editor="editor" :class="editorBubbleMenuClass" />
-
-    <menu-bar :editor="editor" :class="editorMenubarClass" />
-
+  <div>
+      <menu-bubble :editor="editor" :class="editorBubbleMenuClass" />
+    </div>
+    <div>
+      <menu-bar :editor="editor" :class="editorMenubarClass" />
+    </div>
     <div
       v-if="isCodeViewMode"
       :class="{
@@ -105,12 +107,12 @@ export default defineComponent({
 
   props: {
     content: {
-      type: String,
+      validator: prop => typeof prop === 'object' || typeof prop === 'string',
       default: '',
     },
     extensions: {
-      type: Array,
-      default: [],
+      type: Array as () => Extensions,
+      default: () => [],
     },
     placeholder: {
       type: String,
@@ -214,14 +216,17 @@ export default defineComponent({
 
       emit('onUpdate', output, editor);
     };
-
+    const onCreate = ({ editor }: { editor: Editor }) => {
+      emit('onCreate', editor);
+    };
     const editor = useEditor({
       content: props.content,
       extensions,
       editable: !props.readonly,
-      onCreate: (options) => {
-        emit('onCreate', options);
-      },
+      // onCreate: (options) => {
+      //   emit('onCreate', options);
+      // },
+      onCreate,
       onTransaction: (options) => {
         emit('onTransaction', options);
       },

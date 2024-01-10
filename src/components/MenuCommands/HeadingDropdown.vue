@@ -4,16 +4,20 @@
     trigger="click"
     popper-class="el-tiptap-dropdown-popper"
     @command="toggleHeading"
+    :popper-options="{ modifiers: [{ name: 'computeStyles', options: { adaptive: false } }] }"
   >
-    <command-button
-      :enable-tooltip="enableTooltip"
-      :is-active="editor.isActive('heading')"
-      :tooltip="t('editor.extensions.Heading.tooltip')"
-      :disabled="isCodeViewMode"
-      icon="heading"
-    />
+    <div>
+      <command-button
+        :enable-tooltip="enableTooltip"
+        :is-active="editor.isActive('heading')"
+        :tooltip="t('editor.extensions.Heading.tooltip')"
+        :readonly="isCodeViewMode"
+        :button-icon="buttonIcon"
+        icon="heading"
+      />
+    </div>
     <template #dropdown>
-      <el-dropdown-menu slot="dropdown" class="el-tiptap-dropdown-menu">
+      <el-dropdown-menu class="el-tiptap-dropdown-menu">
         <el-dropdown-item
           v-for="level in [0, ...levels]"
           :key="level"
@@ -74,6 +78,10 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   setup() {

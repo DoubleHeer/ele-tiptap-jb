@@ -1,15 +1,16 @@
 <template>
-  <el-dropdown placement="bottom" trigger="click" @command="toggleFontSize">
-    <command-button
-      :enable-tooltip="enableTooltip"
-      :tooltip="t('editor.extensions.FontSize.tooltip')"
-      :readonly="isCodeViewMode"
-      icon="font-size"
-    />
-
+  <el-dropdown placement="bottom" trigger="click" popper-class="my-dropdown" :popper-options="{ modifiers: [{ name: 'computeStyles', options: { adaptive: false } }] }" @command="toggleFontSize">
+    <div>
+      <command-button
+        :enable-tooltip="enableTooltip"
+        :tooltip="t('editor.extensions.FontSize.tooltip')"
+        :readonly="isCodeViewMode"
+        :button-icon="buttonIcon"
+        icon="font-size"
+      />
+    </div>
     <template #dropdown>
       <el-dropdown-menu class="el-tiptap-dropdown-menu">
-        <!-- default size -->
         <el-dropdown-item
           :command="defaultSize"
           :class="{
@@ -62,6 +63,10 @@ export default defineComponent({
       type: Editor,
       required: true,
     },
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   setup() {

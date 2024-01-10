@@ -1,5 +1,4 @@
 import { Extension } from '@tiptap/core';
-import type { Editor } from '@tiptap/core';
 import { extendCodemirror } from '@/utils/code-view';
 import Logger from '@/utils/logger';
 import CodeViewCommandButton from '@/components/MenuCommands/CodeViewCommandButton.vue';
@@ -20,13 +19,6 @@ export interface CodeViewOptions {
 const CodeView = Extension.create<CodeViewOptions>({
   name: 'codeView',
 
-  defaultOptions: {
-    codemirror: null,
-    codemirrorOptions: {
-      ...DEFAULT_CODEMIRROR_OPTIONS,
-    },
-  },
-
   onBeforeCreate() {
     if (!this.options.codemirror) {
       Logger.warn('"CodeView" extension requires the CodeMirror library.');
@@ -43,9 +35,13 @@ const CodeView = Extension.create<CodeViewOptions>({
   addOptions() {
     return {
       ...this.parent?.(),
-      button({ editor }: { editor: Editor }) {
+      buttonIcon: '',
+      button({ extension }: { extension: any; }) {
         return {
           component: CodeViewCommandButton,
+          componentProps: {
+            buttonIcon: extension.options.buttonIcon,
+          }
         };
       },
     };

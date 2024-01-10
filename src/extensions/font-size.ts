@@ -1,4 +1,5 @@
 import { Editor, Extension } from '@tiptap/core';
+import { getMarkAttributes } from '@tiptap/vue-3';
 import {
   DEFAULT_FONT_SIZES,
   convertToPX,
@@ -33,11 +34,37 @@ const FontSize = Extension.create<FontSizeOptions>({
     return {
       types: ['textStyle'],
       fontSizes: DEFAULT_FONT_SIZES,
-      button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
+      buttonIcon: '',
+      commandList: DEFAULT_FONT_SIZES.map(key => {
+        return {
+          title: `fontSize ${key}`,
+          command: ({ editor, range }:any) => {
+            if (key === getMarkAttributes(editor.state, 'textStyle').fontSize || '') {
+              editor
+                .chain()
+                .focus()
+                .deleteRange(range)
+                .unsetFontSize()
+                .run();
+            } else {
+              editor
+                .chain()
+                .focus()
+                .deleteRange(range)
+                .setFontSize(key)
+                .run();
+            }
+          },
+          disabled: false,
+          isActive(editor:Editor) { return key === getMarkAttributes(editor.state, 'textStyle').fontSize || ''; }
+        };
+      }),
+      button({ editor, extension }: { editor: Editor; extension: any; t: (...args: any[]) => string }) {
         return {
           component: FontSizeDropdown,
           componentProps: {
             editor,
+            buttonIcon: extension.options.buttonIcon,
           },
         };
       },
@@ -71,23 +98,20 @@ const FontSize = Extension.create<FontSizeOptions>({
     return {
       setFontSize:
         (fontSize) =>
-        ({ chain }) => {
-          return chain().setMark('textStyle', { fontSize }).run();
-        },
+          ({ chain }) => {
+            return chain().setMark('textStyle', { fontSize }).run();
+          },
       unsetFontSize:
         () =>
-        ({ chain }) => {
-          return chain()
-            .setMark('textStyle', { fontSize: DEFAULT_FONT_SIZE })
-            .removeEmptyTextStyle()
-            .run();
-        },
+          ({ chain }) => {
+            return chain()
+              .setMark('textStyle', { fontSize: DEFAULT_FONT_SIZE })
+              .removeEmptyTextStyle()
+              .run();
+          },
     };
   },
-
-  addExtensions() {
-    return [TextStyle];
-  },
+  nessesaryExtensions: [TextStyle],
 });
 
 export default FontSize;

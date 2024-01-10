@@ -1,5 +1,5 @@
 <template>
-    <node-view-wrapper as="div" class="ja-task-view" :contenteditable="true">
+    <node-view-wrapper as="div" class="ja-task-view">
         <div>
             <div>{{ node!.attrs.jaTaskName }}</div>
         <button :contenteditable="false" @click="clickJump">跳转链接</button>
@@ -26,6 +26,7 @@ export default defineComponent({
   },
     methods: {
         clickJump() {
+            console.log(this.node!.attrs.jaTaskId)
             this.jaTaskNodeOptions.handleTask(this.node!.attrs.jaTaskId);
     
         }
