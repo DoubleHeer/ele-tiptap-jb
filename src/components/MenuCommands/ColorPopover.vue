@@ -32,7 +32,7 @@
       <el-input
         v-model="colorText"
         placeholder="HEX"
-        autofocus="true"
+        :autofocus="true"
         maxlength="7"
         size="small"
         class="color-hex__input"

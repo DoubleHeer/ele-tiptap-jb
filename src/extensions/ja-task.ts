@@ -40,6 +40,9 @@ const JATask = Node.create({
                     'data-jaTask-name': attributes.jaTaskName,
                 }),
             },
+            jaTaskData: {
+                default: undefined
+            }
         };
     },
 
@@ -70,28 +73,26 @@ const JATask = Node.create({
 
     addOptions() {
         return {
-            jaTaskId: undefined,
-            jaTaskName: undefined,
             handleTask:null,
             HTMLAttributes: {
               class: `node-${this.name}`,
-            },
-            button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
-                return {
-                    component: CommandButton,
-                    componentProps: {
-                        command: () => {
-                            editor.commands.setJaTask({"jaTaskName": "测试任务没那s阿萨德个"});
-                            editor.commands.insertContent({
-                                type: 'paragraph'
-                            });
-                            
-                        },
-                        icon: 'horizontal-rule',
-                        tooltip: t('editor.extensions.HorizontalRule.tooltip'),
-                    },
-                };
             }
+            // button({ editor, t }: { editor: Editor; t: (...args: any[]) => string }) {
+            //     return {
+            //         component: CommandButton,
+            //         componentProps: {
+            //             command: () => {
+            //                 editor.commands.setJaTask({"jaTaskName": "测试任务没那s阿萨德个"});
+            //                 editor.commands.insertContent({
+            //                     type: 'paragraph'
+            //                 });
+                            
+            //             },
+            //             icon: 'horizontal-rule',
+            //             tooltip: t('editor.extensions.HorizontalRule.tooltip'),
+            //         },
+            //     };
+            // }
         };
     },
     addNodeView() {

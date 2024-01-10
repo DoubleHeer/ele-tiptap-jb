@@ -1,9 +1,9 @@
 <template>
     <node-view-wrapper as="div" class="ja-task-view">
-        <div>
+        <node-view-wrapper as="div" :contenteditable="true" >
             <div>{{ node!.attrs.jaTaskName }}</div>
+        </node-view-wrapper>
         <button :contenteditable="false" @click="clickJump">跳转链接</button>
-        </div>
     </node-view-wrapper>
 </template>
 
@@ -18,17 +18,15 @@ export default defineComponent({
     },
     props: nodeViewProps,
     computed: {
-    jaTaskNodeOptions() {
-      return this.editor.extensionManager.extensions.find(
-        (e) => e.name === 'jaTask'
-      )!.options;
+        jaTaskNodeOptions() {
+            return this.editor.extensionManager.extensions.find(
+                (e) => e.name === 'jaTask'
+            )!.options;
+        },
     },
-  },
     methods: {
         clickJump() {
-            console.log(this.node!.attrs.jaTaskId)
-            this.jaTaskNodeOptions.handleTask(this.node!.attrs.jaTaskId);
-    
+            this.jaTaskNodeOptions.handleTask(this.node!.attrs.jaTaskData)
         }
     },
 });
@@ -37,4 +35,8 @@ export default defineComponent({
 .ja-task-view {
     background-color: antiquewhite;
 }
+[contenteditable]:focus {
+    outline: none;
+}
+
 </style>
