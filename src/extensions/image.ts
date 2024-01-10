@@ -1,11 +1,11 @@
-import { Editor, mergeAttributes } from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 import { VueNodeViewRenderer } from '@tiptap/vue-3';
 import TiptapImage from '@tiptap/extension-image';
 import InsertImageCommandButton from '@/components/MenuCommands/Image/InsertImageCommandButton.vue';
 import ImageView from '@/components/ExtensionViews/ImageView.vue';
 import { ImageDisplay } from '@/utils/image';
 import { Plugin } from '@tiptap/pm/state';
-import {findAllImageElementsWithLocalSource,extractImageDataFromRtf,_convertHexToBase64,replaceImagesFileSourceWithInlineRepresentation} from '../hooks/paste-from-office'
+import { findAllImageElementsWithLocalSource, extractImageDataFromRtf, _convertHexToBase64, replaceImagesFileSourceWithInlineRepresentation } from '../hooks/paste-from-office'
 import {
   DEFAULT_IMAGE_WIDTH,
   DEFAULT_IMAGE_DISPLAY,
@@ -100,6 +100,8 @@ const Image = TiptapImage.extend({
     };
   },
   addProseMirrorPlugins() {
+    const options = this.options
+    const uploadRequest = options.uploadRequest
     return [
       new Plugin({
         props: {
@@ -120,45 +122,43 @@ const Image = TiptapImage.extend({
               }
 
               event.preventDefault()
-
               const { schema } = view.state
-              const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
-
               images.forEach(image => {
-
-                console.log(image)
-                //回调上传逻辑
-                // upload(image).then(url => {
-                //   const node = schema.nodes.image.create({
-                //     src: url
-                //   })
-                //   const transaction = view.state.tr.insert(coordinates.pos, node)
-                //   view.dispatch(transaction)
-                // })
-
+                if (uploadRequest) {
+                  uploadRequest(image).then(url => {
+                    const node = schema.nodes.image.create({
+                      src: url
+                    })
+                    const transaction = view.state.tr.replaceSelectionWith(node)
+                    view.dispatch(transaction)
+                  })
+                }
               })
             }
           },
           handlePaste: (view, event, slice) => {
             console.log('触发粘贴--解析图片--只支持单个图片粘贴');
-            const items = Array.from(event.clipboardData?.items || []);
-            console.log(event.clipboardData?.getData('text/html'))
-            console.log(event.clipboardData?.getData('text'))
-            console.log(event.clipboardData?.getData('text/rtf'))
-            console.log(items)
+            const items = Array.from(event.clipboardData?.items || [])
+            const { schema } = view.state
+            // const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
             for (const item of items) {
               if (item.type.indexOf("image") === 0) {
-                // handle the image upload
-                console.log('发现图片去上传')
-                // return true; // handled
+                if (uploadRequest) {
+                  uploadRequest(item).then(url => {
+                    const node = schema.nodes.image.create({
+                      src: url
+                    })
+                    const transaction = view.state.tr.replaceSelectionWith(node)
+                    view.dispatch(transaction)
+                  })
+                }
+                return true
               }
             }
 
             return false;
 
           }
-        
-
         }
       })
     ]
