@@ -1,5 +1,5 @@
 <template>
-  <bubble-menu v-if="editor" :editor="editor">
+  <bubble-menu v-if="editor" v-show="activeMenu !== 'none'" :editor="editor">
     <div
       :class="{
         'el-tiptap-editor__menu-bubble--active': bubbleMenuEnable,
@@ -38,7 +38,7 @@
 import { defineComponent, inject } from 'vue';
 import { Editor, BubbleMenu } from '@tiptap/vue-3';
 import { getMarkRange } from '@tiptap/core';
-import { TextSelection, AllSelection, Selection } from '@tiptap/pm/state';
+import { TextSelection, AllSelection, Selection } from 'prosemirror-state';
 import VIcon from '../Icon/Icon.vue';
 import LinkBubbleMenu from './LinkBubbleMenu.vue';
 
@@ -111,7 +111,7 @@ export default defineComponent({
   },
 
   watch: {
-    'editor.state.selection': function (selection: Selection) {
+    'editor.state.selection': function(selection: Selection) {
       if (this.$_isLinkSelection(selection)) {
         if (!this.isLinkBack) {
           this.setMenuType(MenuType.LINK);
@@ -126,7 +126,7 @@ export default defineComponent({
   methods: {
     generateCommandButtonComponentSpecs() {
       const extensionManager = this.editor.extensionManager;
-      return extensionManager.extensions.reduce((acc, extension) => {
+      return extensionManager.extensions.reduce((acc: any, extension) => {
         if (!extension.options.bubble) return acc;
         const { button } = extension.options;
         if (!button || typeof button !== 'function') return acc;
@@ -138,11 +138,11 @@ export default defineComponent({
         });
 
         if (Array.isArray(menuBtnComponentSpec)) {
-          return [...acc, ...menuBtnComponentSpec];
+          return [...acc, ...menuBtnComponentSpec.map(item => { return { ...item, priority: extension.options.priority }; })];
         }
 
-        return [...acc, menuBtnComponentSpec];
-      }, []);
+        return [...acc, { ...menuBtnComponentSpec, priority: extension.options.priority }];
+      }, [])?.sort((a:any, b:any) => b.priority - a.priority);
     },
     linkBack() {
       this.setMenuType(MenuType.DEFAULT);

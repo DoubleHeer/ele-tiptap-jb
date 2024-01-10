@@ -1,12 +1,14 @@
 <template>
-  <el-dropdown placement="bottom" trigger="click" @command="toggleFontType">
-    <command-button
-      :enable-tooltip="enableTooltip"
-      :tooltip="t('editor.extensions.FontType.tooltip')"
-      :readonly="isCodeViewMode"
-      icon="font-family"
-    />
-
+  <el-dropdown placement="bottom" trigger="click" @command="toggleFontType" popper-class="my-dropdown" :popper-options="{ modifiers: [{ name: 'computeStyles', options: { adaptive: false } }] }">
+    <div>
+      <command-button
+        :enable-tooltip="enableTooltip"
+        :tooltip="t('editor.extensions.FontType.tooltip')"
+        :readonly="isCodeViewMode"
+        icon="font-family"
+        :button-icon="buttonIcon"
+      />
+    </div>
     <template #dropdown>
       <el-dropdown-menu class="el-tiptap-dropdown-menu">
         <el-dropdown-item
@@ -47,6 +49,10 @@ export default defineComponent({
       type: Editor,
       required: true,
     },
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   setup() {

@@ -33,14 +33,12 @@ export default defineComponent({
 
     return { t, enableTooltip, isCodeViewMode };
   },
-
   methods: {
     generateCommandButtonComponentSpecs() {
       const extensionManager = this.editor.extensionManager;
       return extensionManager.extensions.reduce((acc, extension) => {
         const { button } = extension.options;
         if (!button || typeof button !== 'function') return acc;
-
         const menuBtnComponentSpec = button({
           editor: this.editor,
           t: this.t,
@@ -48,11 +46,11 @@ export default defineComponent({
         });
 
         if (Array.isArray(menuBtnComponentSpec)) {
-          return [...acc, ...menuBtnComponentSpec];
+          return [...acc, ...menuBtnComponentSpec.map(item => { return { ...item, priority: extension.options.priority }; })];
         }
 
-        return [...acc, menuBtnComponentSpec];
-      }, []);
+        return [...acc, { ...menuBtnComponentSpec, priority: extension.options.priority }];
+      }, [])?.sort((a:any, b:any) => b.priority - a.priority);
     },
   },
 });

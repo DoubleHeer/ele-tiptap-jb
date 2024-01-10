@@ -5,21 +5,22 @@
       :enable-tooltip="enableTooltip"
       :tooltip="t('editor.extensions.Link.edit.tooltip')"
       icon="edit"
+      :button-icon="buttonIcon"
     />
 
     <el-dialog
       :title="t('editor.extensions.Link.edit.control.title')"
-      :visible.sync="editLinkDialogVisible"
+      v-model="editLinkDialogVisible"
       :append-to-body="true"
       width="400px"
-      custom-class="el-tiptap-edit-link-dialog"
+      class="el-tiptap-edit-link-dialog"
     >
       <el-form :model="linkAttrs" label-position="right" size="small">
         <el-form-item
           :label="t('editor.extensions.Link.edit.control.href')"
           prop="href"
         >
-          <el-input v-model="linkAttrs.href" autocomplete="off" />
+          <el-input v-model="linkAttrs.href" autocomplete="off" :placeholder="placeholder" />
         </el-form-item>
 
         <el-form-item prop="openInNewTab">
@@ -84,6 +85,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   setup() {
@@ -99,7 +104,11 @@ export default defineComponent({
       editLinkDialogVisible: false,
     };
   },
-
+  computed: {
+    placeholder() {
+      return this.editor.extensionManager.extensions.find(item => item.name === 'link')?.options?.editLinkPlaceholder;
+    }
+  },
   methods: {
     updateLinkAttrs() {
       this.editor.commands.setLink(this.linkAttrs);

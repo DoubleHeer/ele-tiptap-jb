@@ -29,7 +29,6 @@ export default defineComponent({
   },
 
   props: nodeViewProps,
-
   computed: {
     done: {
       get(): boolean {

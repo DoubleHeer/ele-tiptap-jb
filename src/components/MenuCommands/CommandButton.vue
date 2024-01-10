@@ -4,11 +4,14 @@
     :show-after="350"
     :disabled="!enableTooltip || readonly"
     effect="dark"
+    popper-class="tooltip-up"
     placement="top"
+    :enterable="false"
   >
-    <div :class="commandButtonClass" @mousedown.prevent @click="onClick">
-      <v-icon :name="icon" />
+    <div v-if="!buttonIcon" :class="commandButtonClass" @mousedown.prevent @click="onClick">
+      <v-icon :name="icon" :button-icon="buttonIcon" />
     </div>
+    <div v-else v-html="buttonIcon" :class="commandButtonClass" @mousedown.prevent @click="onClick" />
   </el-tooltip>
 </template>
 
@@ -27,6 +30,11 @@ export default defineComponent({
     icon: {
       type: String,
       required: true,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     },
 
     isActive: {
@@ -48,26 +56,29 @@ export default defineComponent({
       type: Function,
       default: noop,
     },
-
+    buttonIcon: {
+      type: String,
+      required: false,
+      default: ''
+    },
     readonly: {
       type: Boolean,
       default: false,
     },
   },
-
   computed: {
     commandButtonClass(): object {
       return {
         'el-tiptap-editor__command-button': true,
         'el-tiptap-editor__command-button--active': this.isActive,
-        'el-tiptap-editor__command-button--readonly': this.readonly,
+        'el-tiptap-editor__command-button--readonly': (this.readonly || this.disabled),
       };
     },
   },
 
   methods: {
     onClick() {
-      if (!this.readonly) this.command();
+      if (!this.readonly && !this.disabled) this.command();
     },
   },
 });

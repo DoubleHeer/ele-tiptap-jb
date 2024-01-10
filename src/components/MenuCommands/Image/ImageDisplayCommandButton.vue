@@ -28,6 +28,7 @@
           :enable-tooltip="enableTooltip"
           :tooltip="t('editor.extensions.Image.buttons.display.tooltip')"
           icon="image-align"
+          :button-icon="buttonIcon"
         />
       </span>
     </template>
@@ -51,6 +52,10 @@ export default defineComponent({
   props: {
     node: nodeViewProps['node'],
     updateAttrs: nodeViewProps['updateAttributes'],
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   data() {
@@ -63,7 +68,7 @@ export default defineComponent({
       ],
     };
   },
-
+  
   setup() {
     const t = inject('t');
     const enableTooltip = inject('enableTooltip', true);

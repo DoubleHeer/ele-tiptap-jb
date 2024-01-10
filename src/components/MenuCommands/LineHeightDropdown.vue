@@ -3,15 +3,20 @@
     placement="bottom"
     trigger="click"
     @command="(lineHeight) => editor.commands.setLineHeight(lineHeight)"
+    popper-class="my-dropdown"
+    :popper-options="{ modifiers: [{ name: 'computeStyles', options: { adaptive: false } }] }"
   >
-    <command-button
-      :enable-tooltip="enableTooltip"
-      :tooltip="t('editor.extensions.LineHeight.tooltip')"
-      :readonly="isCodeViewMode"
-      icon="text-height"
-    />
+    <div>
+      <command-button
+        :enable-tooltip="enableTooltip"
+        :button-icon="buttonIcon"
+        :tooltip="t('editor.extensions.LineHeight.tooltip')"
+        :readonly="isCodeViewMode"
+        icon="text-height"
+      />
+    </div>
     <template #dropdown>
-      <el-dropdown-menu slot="dropdown" class="el-tiptap-dropdown-menu">
+      <el-dropdown-menu class="el-tiptap-dropdown-menu">
         <el-dropdown-item
           v-for="lineHeight in lineHeights"
           :key="lineHeight"
@@ -50,6 +55,10 @@ export default defineComponent({
     editor: {
       type: Editor,
       required: true,
+    },
+    buttonIcon: {
+      default: '',
+      type: String
     },
   },
 

@@ -5,6 +5,7 @@
       :enable-tooltip="enableTooltip"
       :tooltip="t('editor.extensions.Image.buttons.image_options.tooltip')"
       icon="ellipsis-h"
+      :button-icon="buttonIcon"
     />
 
     <el-dialog
@@ -12,7 +13,7 @@
       :title="t('editor.extensions.Image.control.edit_image.title')"
       :append-to-body="true"
       width="400px"
-      custom-class="el-tiptap-edit-image-dialog"
+      class="el-tiptap-edit-image-dialog"
       @open="syncImageAttrs"
     >
       <el-form :model="imageAttrs" label-position="top" size="small">
@@ -90,6 +91,10 @@ export default defineComponent({
   props: {
     node: nodeViewProps['node'],
     updateAttrs: nodeViewProps['updateAttributes'],
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
 
   data() {

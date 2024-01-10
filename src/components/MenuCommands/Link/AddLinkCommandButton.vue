@@ -7,6 +7,7 @@
       :enable-tooltip="enableTooltip"
       :tooltip="t('editor.extensions.Link.add.tooltip')"
       icon="link"
+      :button-icon="buttonIcon"
     />
 
     <el-dialog
@@ -14,14 +15,17 @@
       :title="t('editor.extensions.Link.add.control.title')"
       :append-to-body="true"
       width="400px"
-      custom-class="el-tiptap-edit-link-dialog"
+      class="el-tiptap-edit-link-dialog"
     >
       <el-form :model="linkAttrs" label-position="right" size="small">
         <el-form-item
           :label="t('editor.extensions.Link.add.control.href')"
           prop="href"
         >
-          <el-input v-model="linkAttrs.href" autocomplete="off" />
+          <el-input
+            v-model="linkAttrs.href"
+            autocomplete="off"
+            :placeholder = placeholder />
         </el-form-item>
 
         <el-form-item prop="openInNewTab">
@@ -81,6 +85,14 @@ export default defineComponent({
       type: Editor,
       required: true,
     },
+    buttonIcon: {
+      default: '',
+      type: String
+    },
+    placeholder: {
+      default: '',
+      type: String
+    }
   },
 
   setup() {

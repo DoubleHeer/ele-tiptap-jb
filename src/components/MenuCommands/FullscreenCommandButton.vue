@@ -4,6 +4,7 @@
       :command="() => toggleFullscreen(!isFullscreen)"
       :enable-tooltip="enableTooltip"
       :tooltip="buttonTooltip"
+      :button-icon="buttonIcon"
       :icon="isFullscreen ? 'compress' : 'expand'"
       :is-active="isFullscreen"
     />
@@ -12,7 +13,6 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import { Editor } from '@tiptap/core';
 import CommandButton from './CommandButton.vue';
 
 export default defineComponent({
@@ -21,14 +21,12 @@ export default defineComponent({
   components: {
     CommandButton,
   },
-
   props: {
-    editor: {
-      type: Editor,
-      required: true,
-    },
+    buttonIcon: {
+      default: '',
+      type: String
+    }
   },
-
   setup() {
     const t = inject('t');
     const enableTooltip = inject('enableTooltip', true);
