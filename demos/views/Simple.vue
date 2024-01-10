@@ -1,10 +1,6 @@
 <template>
   <div class="el-tiptap-editor__wrapper">
-    <el-tiptap
-      :extensions="extensions"
-      v-model:content="content"
-      placeholder="Write something ..."
-    />
+    <el-tiptap :extensions="extensions" v-model:content="content" placeholder="Write something ..." />
   </div>
 </template>
 
@@ -48,9 +44,23 @@ const extensions = [
   Heading.configure({ level: 5 }),
   Bold.configure({ bubble: true }),
   Link.configure({ bubble: true }),
-  Image,
+  Image.configure({
+    width: {
+      default: 300
+    },
+    uploadRequest(file) {
+      console.log(file);
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>{resolve('https://www.shijuepi.com/uploads/allimg/200821/1-200R1141258.jpg')},3000)
+      })
+    }
+  }),
   TaskList,
-  History,
+  History.configure({
+    button() {
+      return {}
+    }
+  }),
 ];
 
 const content = ref(
