@@ -90,10 +90,6 @@ const routes = [
     route: 'AllExtensions',
   },
   {
-    label: 'Bubble Menu',
-    route: 'BubbleMenu',
-  },
-  {
     label: 'Placeholder',
     route: 'Placeholder',
   },

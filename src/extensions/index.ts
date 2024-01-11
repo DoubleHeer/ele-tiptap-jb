@@ -39,3 +39,5 @@ export { default as SelectAll } from './select-all';
 export { default as CodeView } from './code-view';
 export { default as JATask } from './ja-task';
 export { default as JAHoldLine } from './ja-hold-line';
+export { default as TrailingNode } from './trailing-node';
+export { default as TaskLink } from './task-link';

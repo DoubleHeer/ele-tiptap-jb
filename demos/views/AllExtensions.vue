@@ -5,7 +5,7 @@
 
     <el-tiptap :extensions="paragraphExtensions" content="Paragraph Extensions" />
 
-    <el-tiptap :extensions="richAndToolsExtensions" content="Rich And Tools Extensions" />
+    <el-tiptap :extensions="richAndToolsExtensions" content="Rich And Tools Extensions" @onUpdate="onUpdate1" />
   </div>
 </template>
 
@@ -47,7 +47,9 @@ import {
   History,
   CodeView,
   JATask,
-  JAHoldLine
+  JAHoldLine,
+  TrailingNode,
+  TaskLink
 } from 'element-tiptap';
 
 import codemirror from 'codemirror';
@@ -78,7 +80,14 @@ const textExtensions = [
       console.log(data)
     }
   }),
-  JAHoldLine
+  JAHoldLine,
+  TaskLink.configure({
+    handleTask: (data) => {
+      console.log('------------')
+      console.log(data)
+    }
+  }),
+  Link
 ];
 
 const paragraphExtensions = [
@@ -95,6 +104,7 @@ const paragraphExtensions = [
   Blockquote,
   CodeBlock,
   History,
+  TaskLink
 ];
 
 const richAndToolsExtensions = [
@@ -107,6 +117,7 @@ const richAndToolsExtensions = [
   ),
   Iframe,
   Table.configure({ resizable: true }),
+  TrailingNode,
   HorizontalRule,
   Print,
   SelectAll,
@@ -138,83 +149,39 @@ const clickDemo = () => {
     "id": "newTask140990d0",
     "type": "newTask",
     "data": {
-      "taskId": 100000000007121,
+      "taskId": 100000000010409,
       "text": "",
       "taskTags": [],
       "executorUsers": [
-        321285555352069,
-        100000000024257,
-        100000000024258,
+        385904649646597,
         100000000001501,
         321285524263429,
-        385904649646597,
-        321289949549061,
-        321289962598917,
-        321534260158981,
-        321539785261573,
         321554630849029,
-        321285522637317,
-        321271308612101,
-        100000000024260,
-        321535489626629,
-        321555362390533,
-        321535436399109,
-        321540455547397,
-        321534257381893,
-        399069712077317,
-        321285538710023,
-        321292458172934,
-        321297336390149,
-        321297336635909,
-        423130941943621,
-        321540453347845,
-        321539762184709,
-        321554696081925
+        423130941943621
       ],
       "createdUser": 321554630849029,
       "isExist": "TRUE",
-      "title": "ll000",
-      "list": null,
+      "title": "tt",
       "isCopy": null
     }
   }
   }
-  jbEditor.value.commands.setJaTask(options)
+  jbEditor.value.commands.setTaskLink(options)
   // jbEditor.value.commands.setJAHoldLine({ 'title': 'hhhh' });
 };
 const onUpdate = (output, editor) => {
   console.log(output);
+
   console.log(editor.getHTML())
 };
+const onUpdate1 = (output, editor) => {
 
+  console.log(editor.getHTML())
+  console.log(editor.getJSON())
+};
 const content = {
   "type": "doc",
-  "content": [{
-    "type": "jaHoldLine",
-    "attrs": {
-      "title": "任务标题yi"
-    }
-  },
-  {
-    "type": "jaTask",
-    "attrs": {
-      "jaTaskName": "测试任务没那个",
-      "jaTaskId": "12345"
-    }
-  },
-  {
-    "type": "jaHoldLine",
-    "attrs": {
-      "title": "任务标题yi"
-    }
-  },
-  {
-    "type": "jaTask",
-    "attrs": {
-      "jaTaskName": "测试任务没那个",
-      "jaTaskId": "33333"
-    }
-  },
+  "content": [
   {
     "type": "paragraph",
     "content": [

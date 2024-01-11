@@ -3,7 +3,8 @@
         <node-view-wrapper as="div" :contenteditable="true" >
             <div>{{ node!.attrs.jaTaskName }}</div>
         </node-view-wrapper>
-        <button :contenteditable="false" @click="clickJump">跳转链接</button>
+        <button @click="clickJump">跳转链接</button>
+        <div v-html="node!.attrs.jaTaskData.data.list[0].htmlContent"></div>
     </node-view-wrapper>
 </template>
 
@@ -26,6 +27,7 @@ export default defineComponent({
     },
     methods: {
         clickJump() {
+            console.log('---------jatask')
             this.jaTaskNodeOptions.handleTask(this.node!.attrs.jaTaskData)
         }
     },

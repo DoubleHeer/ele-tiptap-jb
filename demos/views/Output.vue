@@ -10,12 +10,12 @@
 
     <div class="section">
       <h2 class="section__title">HTML</h2>
-      <pre><code>{{ output.html }}</code></pre>
+      <pre><code>{{ eOutput.html }}</code></pre>
     </div>
 
     <div class="section">
       <h2 class="section__title">JSON</h2>
-      <pre><code>{{ output.json }}</code></pre>
+      <pre><code>{{ eOutput.json }}</code></pre>
     </div>
   </div>
 </template>
@@ -66,14 +66,14 @@ const content = ref(
   '<p>The <code>output</code> prop: <strong>HTML or JSON</strong></p>'
 );
 
-const output = ref({
+const eOutput = ref({
   json: 'Update content to see changes',
   html: 'Update content to see changes',
 });
 
 const onUpdate = (output, editor) => {
-  this.output.value.json = editor.getJSON();
-  this.output.value.html = editor.getHTML();
+  eOutput.value.json = editor.getJSON();
+  eOutput.value.html = editor.getHTML();
 };
 </script>
 
