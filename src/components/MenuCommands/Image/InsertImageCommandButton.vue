@@ -40,6 +40,7 @@
       v-model="imageUploadDialogVisible"
       :title="t('editor.extensions.Image.control.upload_image.title')"
       :append-to-body="true"
+      destroy-on-close
     >
       <el-upload
         :http-request="uploadImage"
