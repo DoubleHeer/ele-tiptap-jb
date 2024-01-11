@@ -7,11 +7,12 @@
       popper-class="el-tiptap-popper"
     >
       <div class="el-tiptap-popper__menu">
-        <div class="el-tiptap-popper__menu__item" @click="openUrlPrompt">
+        <!-- 去除添加外部图片的入口 -->
+        <!-- <div class="el-tiptap-popper__menu__item" @click="openUrlPrompt">
           <span>{{
             t('editor.extensions.Image.buttons.insert_image.external')
           }}</span>
-        </div>
+        </div> -->
 
         <div
           class="el-tiptap-popper__menu__item"

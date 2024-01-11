@@ -1,12 +1,7 @@
 <template>
   <div>
-    <command-button
-      :command="removeImage"
-      :enable-tooltip="enableTooltip"
-      :tooltip="t('editor.extensions.Image.buttons.remove_image.tooltip')"
-      icon="trash-alt"
-      :button-icon="buttonIcon"
-    />
+    <command-button :command="removeImage" :enable-tooltip="enableTooltip"
+      :tooltip="t('editor.extensions.Image.buttons.remove_image.tooltip')" icon="trash-alt" :button-icon="buttonIcon" />
   </div>
 </template>
 
@@ -40,7 +35,7 @@ export default defineComponent({
 
   methods: {
     removeImage() {
-      const a = this.editor?.commands.deleteSelection();
+      this.editor?.commands.deleteSelection();
     },
   },
 });

@@ -1,34 +1,20 @@
 <template>
   <bubble-menu v-if="editor" v-show="activeMenu !== 'none'" :editor="editor">
-    <div
-      :class="{
-        'el-tiptap-editor__menu-bubble--active': bubbleMenuEnable,
-      }"
-      class="el-tiptap-editor__menu-bubble"
-    >
+    <div :class="{
+      'el-tiptap-editor__menu-bubble--active': bubbleMenuEnable,
+    }" class="el-tiptap-editor__menu-bubble">
       <link-bubble-menu v-if="activeMenu === 'link'" :editor="editor">
         <template #prepend>
-          <div
-            v-if="textMenuEnable"
-            class="el-tiptap-editor__command-button"
-            @mousedown.prevent
-            @click="linkBack"
-          >
+          <div v-if="textMenuEnable" class="el-tiptap-editor__command-button" @mousedown.prevent @click="linkBack">
             <v-icon name="arrow-left" />
           </div>
         </template>
       </link-bubble-menu>
 
       <template v-else-if="activeMenu === 'default'">
-        <component
-          v-for="(spec, i) in generateCommandButtonComponentSpecs()"
-          :key="'command-button' + i"
-          :is="spec.component"
-          :enable-tooltip="enableTooltip"
-          v-bind="spec.componentProps"
-          :readonly="isCodeViewMode"
-          v-on="spec.componentEvents || {}"
-        />
+        <component v-for="(spec, i) in generateCommandButtonComponentSpecs()" :key="'command-button' + i"
+          :is="spec.component" :enable-tooltip="enableTooltip" v-bind="spec.componentProps" :readonly="isCodeViewMode"
+          v-on="spec.componentEvents || {}" />
       </template>
     </div>
   </bubble-menu>
@@ -111,7 +97,7 @@ export default defineComponent({
   },
 
   watch: {
-    'editor.state.selection': function(selection: Selection) {
+    'editor.state.selection': function (selection: Selection) {
       if (this.$_isLinkSelection(selection)) {
         if (!this.isLinkBack) {
           this.setMenuType(MenuType.LINK);
@@ -142,7 +128,7 @@ export default defineComponent({
         }
 
         return [...acc, { ...menuBtnComponentSpec, priority: extension.options.priority }];
-      }, [])?.sort((a:any, b:any) => b.priority - a.priority);
+      }, [])?.sort((a: any, b: any) => b.priority - a.priority);
     },
     linkBack() {
       this.setMenuType(MenuType.DEFAULT);
