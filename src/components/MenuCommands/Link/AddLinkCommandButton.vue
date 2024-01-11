@@ -27,12 +27,12 @@
             autocomplete="off"
             :placeholder = placeholder />
         </el-form-item>
-
-        <el-form-item prop="openInNewTab">
+        
+        <!-- <el-form-item prop="openInNewTab">
           <el-checkbox v-model="linkAttrs.openInNewTab">
             {{ t('editor.extensions.Link.add.control.open_in_new_tab') }}
           </el-checkbox>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
 
       <template #footer>
