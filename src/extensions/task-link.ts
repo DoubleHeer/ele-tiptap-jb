@@ -128,7 +128,7 @@ const TaskLink = Mark.create<LinkOptions>({
               options.jaTaskData = JSON.stringify(options.jaTaskData)
             }
             console.log(options)
-            const elems = `<p><strong>${options.jaTaskName} </strong><task tlink=''  data-jaTask-id=${options.jaTaskId} data-jaTask-name=${options.jaTaskName} data-jaTask-data=${options.jaTaskData}>查看详情</task> </p>`
+            const elems = `<p>${options.jaTaskName} <task tlink=''  data-jaTask-id=${options.jaTaskId} data-jaTask-name=${options.jaTaskName} data-jaTask-data=${options.jaTaskData}>查看详情</task> </p>`
             return commands.insertContent(elems);
           },
     }
