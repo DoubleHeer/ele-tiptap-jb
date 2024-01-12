@@ -133,7 +133,7 @@ export default defineComponent({
       return this.node!.attrs.src;
     },
 
-    width(): number {
+    width(): string {
       return this.node!.attrs.width;
     },
 

@@ -30,7 +30,8 @@ const Image = TiptapImage.extend({
         parseHTML: (element) => {
           const width =
             element.style.width || element.getAttribute('width') || null;
-          return width == null ? null : parseInt(width, 10);
+          return width == null ? null : width
+          // parseInt(width, 10);
         },
         renderHTML: (attributes) => {
           return {
