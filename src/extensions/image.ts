@@ -26,7 +26,7 @@ const Image = TiptapImage.extend({
     return {
       ...this.parent?.(),
       width: {
-        default: DEFAULT_IMAGE_WIDTH,
+        default: 200,
         parseHTML: (element) => {
           const width =
             element.style.width || element.getAttribute('width') || null;
@@ -141,14 +141,19 @@ const Image = TiptapImage.extend({
             console.log('触发粘贴--解析图片--只支持单个图片粘贴');
             const items = Array.from(event.clipboardData?.items || [])
             const { schema } = view.state
-            // const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
+            console.log(items);
+
             for (const item of items) {
+              console.log(item);
+
               if (item.type.indexOf("image") === 0) {
                 if (uploadRequest) {
                   uploadRequest(item).then(url => {
                     const node = schema.nodes.image.create({
-                      src: url
+                      src: url,
                     })
+                    console.log(node);
+
                     const transaction = view.state.tr.replaceSelectionWith(node)
                     view.dispatch(transaction)
                   })

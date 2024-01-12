@@ -90,8 +90,14 @@ const textExtensions = [
   }),
   Link,
   Image.configure(
-
-),
+    {
+      uploadRequest() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => { resolve('https://www.shijuepi.com/uploads/allimg/200821/1-200R1141258.jpg') }, 3000)
+        })
+      }
+    }
+  ),
 ];
 
 const paragraphExtensions = [
@@ -149,26 +155,26 @@ const clickDemo = () => {
   const options = {
     jaTaskId: idcc++,
     jaTaskName: "任务id123",
-    jaTaskData:  {
-    "id": "newTask140990d0",
-    "type": "newTask",
-    "data": {
-      "taskId": 100000000010409,
-      "text": "",
-      "taskTags": [],
-      "executorUsers": [
-        385904649646597,
-        100000000001501,
-        321285524263429,
-        321554630849029,
-        423130941943621
-      ],
-      "createdUser": 321554630849029,
-      "isExist": "TRUE",
-      "title": "tt",
-      "isCopy": null
+    jaTaskData: {
+      "id": "newTask140990d0",
+      "type": "newTask",
+      "data": {
+        "taskId": 100000000010409,
+        "text": "",
+        "taskTags": [],
+        "executorUsers": [
+          385904649646597,
+          100000000001501,
+          321285524263429,
+          321554630849029,
+          423130941943621
+        ],
+        "createdUser": 321554630849029,
+        "isExist": "TRUE",
+        "title": "tt",
+        "isCopy": null
+      }
     }
-  }
   }
   jbEditor.value.commands.setTaskLinkWarp(options)
   // jbEditor.value.commands.setJAHoldLine({ 'title': 'hhhh' });

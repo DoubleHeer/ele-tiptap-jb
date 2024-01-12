@@ -49,7 +49,6 @@ const extensions = [
       default: 300
     },
     uploadRequest(file) {
-      console.log(file);
       return new Promise((resolve, reject) => {
         setTimeout(()=>{resolve('https://www.shijuepi.com/uploads/allimg/200821/1-200R1141258.jpg')},3000)
       })
