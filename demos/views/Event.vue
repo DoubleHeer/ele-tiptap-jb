@@ -56,7 +56,7 @@ const extensions = [
 ];
 
 const content =
-  '<p><img src="https://i.ibb.co/4pJs2Lx/undraw-static-assets-rpm6.png" width="300"></p><p>Open <strong>Console</strong>, your action on the editor will be logged.</p>';
+  '<p>任务id123 <task tlink="" data-jatask-id="123" data-jatask-name="任务id123" data-jatask-data="{&quot;id&quot;:&quot;newTask140990d0&quot;,&quot;type&quot;:&quot;newTask&quot;,&quot;data&quot;:{&quot;taskId&quot;:100000000010409,&quot;text&quot;:&quot;&quot;,&quot;taskTags&quot;:[],&quot;executorUsers&quot;:[385904649646597,100000000001501,321285524263429,321554630849029,423130941943621],&quot;createdUser&quot;:321554630849029,&quot;isExist&quot;:&quot;TRUE&quot;,&quot;title&quot;:&quot;tt&quot;,&quot;isCopy&quot;:null}}">查看详情</task> </p><p>&nbsp;</p><p><img src="https://i.ibb.co/4pJs2Lx/undraw-static-assets-rpm6.png" width="300"></p><p>Open <strong>Console</strong>, your action on the editor will be logged.</p>';
 
 const onCreateEvent = () => {
   ElNotification.info({

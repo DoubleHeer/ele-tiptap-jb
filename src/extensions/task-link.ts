@@ -1,133 +1,194 @@
-import { getMarkRange } from '@tiptap/core';
-import type { Editor } from '@tiptap/core';
-import TiptapLink from '@tiptap/extension-link';
-import { Plugin, TextSelection } from '@tiptap/pm/state';
+import { Mark, markPasteRule, mergeAttributes } from '@tiptap/core'
+import { Plugin } from '@tiptap/pm/state'
+import { find, registerCustomProtocol, reset } from 'linkifyjs'
 import { EditorView } from '@tiptap/pm/view';
-// import AddLinkCommandButton from '@/components/MenuCommands/Link/AddLinkCommandButton.vue';
 
-declare module '@tiptap/core' {
-    interface Commands<ReturnType> {
-        taskLink: {
-            setTaskLinkWarp: (options: {}) => ReturnType;
-            setTaskLink: (options: {}) => ReturnType;
-        };
-    }
+export interface LinkProtocolOptions {
+  scheme: string;
+  optionalSlashes?: boolean;
 }
 
-const TaskLink = TiptapLink.extend({
-    name: "taskLink",
-    addAttributes() {
-        return {
-            ...this.parent?.(),
-            id: {
-                default: undefined,
-                parseHTML: element => element.getAttribute('data-id'),
-                renderHTML: attributes => ({
-                    'data-id': attributes.id,
-                }),
-            },
-            jaTaskId: {
-                default: undefined,
-                parseHTML: element => element.getAttribute('data-jaTask-id'),
-                renderHTML: attributes => ({
-                    'data-jaTask-id': attributes.jaTaskId,
-                }),
-            },
-            jaTaskName: {
-                default: undefined,
-                parseHTML: element => element.getAttribute('data-jaTask-name'),
-                renderHTML: attributes => ({
-                    'data-jaTask-name': attributes.jaTaskName,
-                }),
-            },
-            jaTaskData: {
-                default: undefined,
-                parseHTML: element => element.getAttribute('data-jaTask-data'),
-                renderHTML: attributes => ({
-                    'data-jaTask-data': attributes.jaTaskData,
-                }),
+export interface LinkOptions {
+  /**
+   * An array of custom protocols to be registered with linkifyjs.
+   */
+  protocols: Array<LinkProtocolOptions | string>
+
+  /**
+   * A list of HTML attributes to be rendered.
+   */
+  HTMLAttributes: Record<string, any>
+  /**
+   * A validation function that modifies link verification for the auto linker.
+   * @param url - The url to be validated.
+   * @returns - True if the url is valid, false otherwise.
+   */
+  validate?: (url: string) => boolean
+}
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    taskLink: {
+      setTaskLinkWarp: (options: {}) => ReturnType;
+    }
+  }
+}
+
+const TaskLink = Mark.create<LinkOptions>({
+  name: 'taskLink',
+
+  priority: 1000,
+
+  keepOnSplit: false,
+
+  onCreate() {
+    this.options.protocols.forEach(protocol => {
+      if (typeof protocol === 'string') {
+        registerCustomProtocol(protocol)
+        return
+      }
+      registerCustomProtocol(protocol.scheme, protocol.optionalSlashes)
+    })
+  },
+
+  onDestroy() {
+    reset()
+  },
+
+  //   inclusive() {
+  //     return this.options.autolink
+  //   },
+
+  addOptions() {
+    return {
+      openOnClick: true,
+      linkOnPaste: true,
+      autolink: true,
+      protocols: [],
+      handleTask: null,
+      HTMLAttributes: {
+        class: null,
+      },
+      validate: undefined,
+    }
+  },
+
+  addAttributes() {
+    return {
+      tlink: {
+        default: null,
+      },
+      class: {
+        default: this.options.HTMLAttributes.class,
+      },
+      jaTaskId: {
+        default: undefined,
+        parseHTML: element => element.getAttribute('data-jaTask-id'),
+        renderHTML: attributes => ({
+          'data-jaTask-id': attributes.jaTaskId,
+        }),
+      },
+      jaTaskName: {
+        default: undefined,
+        parseHTML: element => element.getAttribute('data-jaTask-name'),
+        renderHTML: attributes => ({
+          'data-jaTask-name': attributes.jaTaskName,
+        }),
+      },
+      jaTaskData: {
+        default: undefined,
+        parseHTML: element => element.getAttribute('data-jaTask-data'),
+        renderHTML: attributes => ({
+          'data-jaTask-data': attributes.jaTaskData,
+        }),
+      }
+    }
+  },
+
+  parseHTML() {
+    return [{ tag: 'task[tlink]:not([tlink *= "javascript:" i])' }]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    // False positive; we're explicitly checking for javascript: links to ignore them
+    // eslint-disable-next-line no-script-url
+    if (HTMLAttributes.tlink?.startsWith('javascript:')) {
+      // strip out the href
+      return ['task', mergeAttributes(this.options.HTMLAttributes, { ...HTMLAttributes, tlink: '' }), 0]
+    }
+    return ['task', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+  },
+
+  addCommands() {
+    return {
+      setTaskLinkWarp:
+        (options) =>
+          ({ commands }) => {
+            if (!(typeof options.jaTaskData === "string")) {
+              options.jaTaskData = JSON.stringify(options.jaTaskData)
             }
-        };
-    },
-    addCommands() {
-        return {
-            setTaskLinkWarp:
-                (options) =>
-                    ({ commands }) => {
-                        return commands.insertContent({
-                            type: this.name,
-                            attrs: options,
-                        });
-                    },
-            setTaskLink:
-                (options) =>
-                    ({ commands }) => {
-                        if (!(typeof options.jaTaskData === "string")) {
-                            options.jaTaskData = JSON.stringify(options.jaTaskData)
-                        }
-                        console.log(options)
-                        const elems = `<p>${options.jaTaskName} <a target="_blank"  data-jaTask-id=${options.jaTaskId} data-jaTask-name=${options.jaTaskName} data-jaTask-data=${options.jaTaskData} href="">查看详情</a> </p>`
-                        return commands.insertContent(elems);
-                    },
-        };
-    },
-    addOptions() {
-        return {
-            ...this.parent?.(),
-            handleTask: null
-            // button({ editor }: { editor: Editor }) {
-            //     return {
-            //         component: AddLinkCommandButton,
-            //         componentProps: {
-            //             editor,
-            //         },
-            //     };
-            // },
-        };
-    },
+            console.log(options)
+            const elems = `<p><strong>${options.jaTaskName} </strong><task tlink=''  data-jaTask-id=${options.jaTaskId} data-jaTask-name=${options.jaTaskName} data-jaTask-data=${options.jaTaskData}>查看详情</task> </p>`
+            return commands.insertContent(elems);
+          },
+    }
+  },
 
-    addProseMirrorPlugins() {
-        const handleTask = this.options.handleTask
-        console.log(this.options)
-        return [
-            new Plugin({
-                props: {
-                    handleClick(view: EditorView, pos: number) {
-                        console.log('回调tasklink')
-                        // 获取点击位置的mark
-                        const marks = view.state.doc.nodeAt(pos)?.marks;
-                        if (!marks) return false;
-                        console.log(marks)
-                        const clickedMark = marks.find(mark => mark.type.name === 'taskLink')
-                        console.log(clickedMark)
-                        if (clickedMark && handleTask) {
-                            // 处理点击当前mark的逻辑
-                            handleTask(clickedMark.attrs.jaTaskData)
 
-                        }
-                        return true;
+  addProseMirrorPlugins() {
+    const handleTask = this.options.handleTask
+    console.log(this.options)
+    return [
+      new Plugin({
+        props: {
+          handleClick(view: EditorView, pos: number) {
+            console.log('回调tasklink')
+            // 获取点击位置的mark
+            const marks = view.state.doc.nodeAt(pos)?.marks;
+            if (!marks) return false;
+            console.log(marks)
+            const clickedMark = marks.find(mark => mark.type.name === 'taskLink')
+            console.log(clickedMark)
+            if (clickedMark && handleTask) {
+              // 处理点击当前mark的逻辑
+              handleTask(clickedMark.attrs.jaTaskData)
+              return false
+            }
+            return true;
+          },
+        },
+      }),
+    ];
+    // const plugins: Plugin[] = []
 
-                        console.log(view)
-                        const { schema, doc, tr } = view.state;
+    // if (this.options.autolink) {
+    //   plugins.push(
+    //     autolink({
+    //       type: this.type,
+    //       validate: this.options.validate,
+    //     }),
+    //   )
+    // }
 
-                        const range = getMarkRange(doc.resolve(pos), schema.marks.link);
+    // if (this.options.openOnClick) {
+    //   plugins.push(
+    //     clickHandler({
+    //       type: this.type,
+    //     }),
+    //   )
+    // }
 
-                        if (!range) return false;
+    // if (this.options.linkOnPaste) {
+    //   plugins.push(
+    //     pasteHandler({
+    //       editor: this.editor,
+    //       type: this.type,
+    //     }),
+    //   )
+    // }
 
-                        const $start = doc.resolve(range.from);
-                        const $end = doc.resolve(range.to);
-
-                        const transaction = tr.setSelection(
-                            new TextSelection($start, $end)
-                        );
-
-                        view.dispatch(transaction);
-                        return true;
-                    },
-                },
-            }),
-        ];
-    },
-});
+    // return plugins
+  },
+})
 
 export default TaskLink;

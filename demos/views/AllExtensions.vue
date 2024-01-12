@@ -166,7 +166,7 @@ const clickDemo = () => {
     }
   }
   }
-  jbEditor.value.commands.setTaskLink(options)
+  jbEditor.value.commands.setTaskLinkWarp(options)
   // jbEditor.value.commands.setJAHoldLine({ 'title': 'hhhh' });
 };
 const onUpdate = (output, editor) => {
@@ -179,18 +179,19 @@ const onUpdate1 = (output, editor) => {
   console.log(editor.getHTML())
   console.log(editor.getJSON())
 };
-const content = {
-  "type": "doc",
-  "content": [
-  {
-    "type": "paragraph",
-    "content": [
-      {
-        "type": "text",
-        "text": "Text Extensions"
-      }
-    ]
-  }
-  ]
-}
+const content = '<p>任务id123 <task tlink="" data-jatask-id="123" data-jatask-name="任务id123" data-jatask-data="{&quot;id&quot;:&quot;newTask140990d0&quot;,&quot;type&quot;:&quot;newTask&quot;,&quot;data&quot;:{&quot;taskId&quot;:100000000010409,&quot;text&quot;:&quot;&quot;,&quot;taskTags&quot;:[],&quot;executorUsers&quot;:[385904649646597,100000000001501,321285524263429,321554630849029,423130941943621],&quot;createdUser&quot;:321554630849029,&quot;isExist&quot;:&quot;TRUE&quot;,&quot;title&quot;:&quot;tt&quot;,&quot;isCopy&quot;:null}}">查看详情</task> </p><p>&nbsp;</p><h2>dwswdscdw</h2><figure class=\"image\"><img src=\"https://ywja-public-bucket.oss-cn-hangzhou.aliyuncs.com//server-platform/3/upload/2024-01-10/1704848761217.png\"></figure><p>dwqq<strong>weewqewqe</strong>wqewqe</p><p><a href=\"www.baidu.com\">www.baidu.com</a></p><p>asd<span style=\"color:hsl(30, 75%, 60%);\">asdasdsadasd</span></p><p>&nbsp;</p>'
+// const content = {
+//   "type": "doc",
+//   "content": [
+//   {
+//     "type": "paragraph",
+//     "content": [
+//       {
+//         "type": "text",
+//         "text": "Text Extensions"
+//       }
+//     ]
+//   }
+//   ]
+// }
 </script>
