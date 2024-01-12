@@ -1,52 +1,38 @@
 <template>
-  <div
-    v-if="editor"
-    :style="editorStyle"
-    :class="[
-      {
-        'el-tiptap-editor': true,
-        'el-tiptap-editor--fullscreen': isFullscreen,
-        'el-tiptap-editor--with-footer': showFooter,
-      },
-      editorClass,
-    ]"
-  >
-  <div>
+  <div v-if="editor" :style="editorStyle" :class="[
+    {
+      'el-tiptap-editor': true,
+      'el-tiptap-editor--fullscreen': isFullscreen,
+      'el-tiptap-editor--with-footer': showFooter,
+    },
+    editorClass,
+  ]">
+    <div>
       <menu-bubble :editor="editor" :class="editorBubbleMenuClass" />
     </div>
-    <div>
+    <div v-show="!readonly">
       <menu-bar :editor="editor" :class="editorMenubarClass" />
     </div>
-    <div
-      v-if="isCodeViewMode"
-      :class="{
-        'el-tiptap-editor__codemirror': true,
-        'border-bottom-radius': isCodeViewMode,
-      }"
-    >
+    <div v-if="isCodeViewMode" :class="{
+      'el-tiptap-editor__codemirror': true,
+      'border-bottom-radius': isCodeViewMode,
+    }">
       <textarea ref="cmTextAreaRef"></textarea>
     </div>
 
-    <editor-content
-      v-show="!isCodeViewMode"
-      :editor="editor"
-      :class="[
-        {
-          'el-tiptap-editor__content': true,
-        },
-        editorContentClass,
-      ]"
-    />
+    <editor-content v-show="!isCodeViewMode" :editor="editor" :class="[
+      {
+        'el-tiptap-editor__content': true,
+      },
+      editorContentClass,
+    ]" />
 
-    <div
-      v-if="showFooter"
-      :class="[
-        {
-          'el-tiptap-editor__footer': true,
-        },
-        editorFooterClass,
-      ]"
-    >
+    <div v-if="showFooter" :class="[
+      {
+        'el-tiptap-editor__footer': true,
+      },
+      editorFooterClass,
+    ]">
       <span class="el-tiptap-editor__characters">
         {{ t('editor.characters') }}: {{ characters }}
       </span>
@@ -198,8 +184,8 @@ export default defineComponent({
         }),
         props.enableCharCount
           ? CharacterCount.configure({
-              limit: props.charCountMax,
-            })
+            limit: props.charCountMax,
+          })
           : null,
       ])
       .filter(Boolean);
