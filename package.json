@@ -1,6 +1,6 @@
 {
   "name": "ja-element-tiptap",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "基于element-tiptap二开的富文本编辑器",
   "license": "MIT",
   "author": "ywja",

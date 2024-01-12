@@ -567,3 +567,9 @@
 .tooltip-up {
   z-index: 10000 !important;
 }
+
+p:has(task) {
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #edf2fc;
+}
