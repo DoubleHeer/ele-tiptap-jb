@@ -7,6 +7,7 @@ const Heading = TiptapHeading.extend({
   addOptions() {
     return {
       ...this.parent?.(),
+      showLevels:[1,2,3],
       buttonIcon: '',
       commandList: this.parent?.()?.levels.concat([0] as any).map(level => {
         return {
@@ -49,7 +50,7 @@ const Heading = TiptapHeading.extend({
         return {
           component: HeadingDropdown,
           componentProps: {
-            levels: (extension.options as HeadingOptions).levels,
+            levels: extension.options.showLevels,//(extension.options as HeadingOptions).levels,
             editor,
             buttonIcon: extension.options.buttonIcon,
           },

@@ -63,7 +63,7 @@ const textExtensions = [
   Document,
   Text,
   Paragraph,
-  Heading.configure({ level: 3 }),
+  Heading.configure({ showLevels: [2,3,4] }),
   Bold.configure({ bubble: true }),
   Underline.configure({ bubble: true }),
   Italic.configure({ bubble: true }),
