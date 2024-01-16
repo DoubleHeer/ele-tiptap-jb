@@ -42,3 +42,4 @@ export { default as JAHoldLine } from './ja-hold-line';
 export { default as TrailingNode } from './trailing-node';
 export { default as TaskLink } from './task-link';
 export { default as Comment } from './comment';
+export { default as HandleMethods } from './handle-methods';

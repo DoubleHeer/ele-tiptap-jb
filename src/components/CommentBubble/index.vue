@@ -43,7 +43,7 @@ export default defineComponent({
     data() {
         return {
             activeMenu: MenuType.NONE,
-            bubbleMenuEnable:false
+            bubbleMenuEnable: false
         }
     },
 
@@ -62,11 +62,14 @@ export default defineComponent({
         'editor.state.selection': function (selection: Selection) {
             if (this.$_isSelectSelection(selection)) {
                 this.bubbleMenuEnable = true
+                // this.setMenuType(MenuType.DEFAULT);
+                //禁用图片等其他气泡
+                this.activeMenu = this.$_getCurrentMenuType();
             }
             else {
                 this.bubbleMenuEnable = false
+                this.setMenuType(MenuType.NONE);
             }
-            this.setMenuType(MenuType.DEFAULT);
         },
     },
 
@@ -74,36 +77,22 @@ export default defineComponent({
         menuShouldShow() {
             return true
         },
-        generateCommandButtonComponentSpecs() {
-            const extensionManager = this.editor.extensionManager;
-            return extensionManager.extensions.reduce((acc: any, extension) => {
-         
-                // if (!extension.options.bubble) return acc;
-                if(!(extension.name == 'comment')) return acc;
-          
-                const { button } = extension.options;
-                if (!button || typeof button !== 'function') return acc;
-      
-                const menuBtnComponentSpec = button({
-                    editor: this.editor,
-                    t: this.t, // i18n
-                    extension,
-                });
-
-                if (Array.isArray(menuBtnComponentSpec)) {
-                    return [...acc, ...menuBtnComponentSpec.map(item => { return { ...item, priority: extension.options.priority }; })];
-                }
-
-                return [...acc, { ...menuBtnComponentSpec, priority: extension.options.priority }];
-            }, [])?.sort((a: any, b: any) => b.priority - a.priority);
-        },
-
         setMenuType(type: MenuType) {
             this.activeMenu = type;
         },
         $_isSelectSelection(selection: Selection) {
             const { $from, $to } = selection;
             return $to.pos > $from.pos;
+        },
+        $_getCurrentMenuType(): MenuType {
+
+            if (
+                this.editor.state.selection instanceof TextSelection ||
+                this.editor.state.selection instanceof AllSelection
+            ) {
+                return MenuType.DEFAULT;
+            }
+            return MenuType.NONE;
         },
 
     },

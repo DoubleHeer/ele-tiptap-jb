@@ -1,6 +1,8 @@
 <template>
     <command-button :command="reqComment" :enable-tooltip="enableTooltip"
         :tooltip="t('editor.extensions.CodeBlock.tooltip')" icon="code" :button-icon="buttonIcon" />
+    <command-button :command="reqCreateTask" :enable-tooltip="enableTooltip"
+        :tooltip="t('editor.extensions.CodeBlock.tooltip')" icon="code" :button-icon="buttonIcon" />
 </template>
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
@@ -36,8 +38,6 @@ export default defineComponent({
         reqComment() {
             const { from, to } = this.editor.state.selection // 获取选区的开始和结束位置
             const text = this.editor.state.doc.textBetween(from, to) // 获取选区的文本内容
-            const hasMark = this.editor.state.doc.rangeHasMark(from, to, this.editor.schema.marks["comment"])
-            console.log(hasMark)
             const comment = {
                 message: text,
                 from,
@@ -45,6 +45,16 @@ export default defineComponent({
             }
             this.editor.commands.reqComment(comment)
         },
+        reqCreateTask() {
+            const { from, to } = this.editor.state.selection // 获取选区的开始和结束位置
+            const text = this.editor.state.doc.textBetween(from, to) // 获取选区的文本内容
+            const task = {
+                message: text,
+                from,
+                to
+            }
+            this.editor.commands.reqCreateTask(task)
+        }
     },
 });
 </script>
