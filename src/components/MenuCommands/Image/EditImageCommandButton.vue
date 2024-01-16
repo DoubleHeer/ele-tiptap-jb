@@ -29,7 +29,7 @@
           <el-input v-model="imageAttrs.alt" autocomplete="off" />
         </el-form-item>
 
-        <el-form-item>
+        <!-- <el-form-item>
           <el-col :span="11">
             <el-form-item
               :label="
@@ -48,7 +48,7 @@
               <el-input v-model="imageAttrs.height" type="number" />
             </el-form-item>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
 
       <template #footer>

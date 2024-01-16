@@ -241,8 +241,8 @@
       display: inline-block;
       float: none;
       margin: 12px 0;
-      max-width: 100%;
-
+      width: 100%;
+      
       &[data-display='inline'] {
         margin-left: 12px;
         margin-right: 12px;
@@ -306,14 +306,14 @@
         transition: all 0.2s ease-in;
         position: relative;
         
-        &:hover {
+        &:hover,&:focus {
           outline-color: #ffc83d;
         }
 
-        &--focused:hover,
-        &--resizing:hover {
-          outline-color: transparent;
-        }
+        // &--focused:hover,
+        // &--resizing:hover {
+        //   // outline-color: transparent;
+        // }
 
         &__placeholder {
           height: 100%;

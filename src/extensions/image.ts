@@ -148,11 +148,11 @@ const Image = TiptapImage.extend({
 
               if (item.type.indexOf("image") === 0) {
                 if (uploadRequest) {
-                  uploadRequest(item).then(url => {
+               
+                  uploadRequest(item.getAsFile()).then(url => {
                     const node = schema.nodes.image.create({
                       src: url,
                     })
-                    console.log(node);
 
                     const transaction = view.state.tr.replaceSelectionWith(node)
                     view.dispatch(transaction)
