@@ -142,11 +142,9 @@ const TaskLink = Mark.create<LinkOptions>({
       new Plugin({
         props: {
           handleClick(view: EditorView, pos: number) {
-            console.log('回调tasklink')
             // 获取点击位置的mark
             const marks = view.state.doc.nodeAt(pos)?.marks;
             if (!marks) return false;
-            console.log(marks)
             const clickedMark = marks.find(mark => mark.type.name === 'taskLink')
             console.log(clickedMark)
             if (clickedMark && handleTask) {

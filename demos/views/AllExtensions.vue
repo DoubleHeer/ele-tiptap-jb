@@ -75,16 +75,9 @@ const textExtensions = [
   Highlight.configure({ bubble: true }),
   FormatClear,
   History,
-  JATask.configure({
-    handleTask: (data) => {
-      console.log('------------')
-      console.log(data)
-    }
-  }),
-  JAHoldLine,
   TaskLink.configure({
     handleTask: (data) => {
-      console.log('------------')
+      console.log('任务点击回调')
       console.log(data)
     }
   }),

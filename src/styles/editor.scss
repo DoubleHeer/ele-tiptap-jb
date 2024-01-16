@@ -575,3 +575,11 @@ p:has(task) {
   margin-top: 5px !important;
   margin-bottom: 5px !important;
 }
+[contenteditable="false"] {
+.tip-comment {
+  position: relative;
+  display: inline-block;
+  border-bottom: 2px solid black;
+
+}
+}

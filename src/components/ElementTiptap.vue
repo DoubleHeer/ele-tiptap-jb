@@ -7,8 +7,11 @@
     },
     editorClass,
   ]">
-    <div>
+    <div v-if="!readonly">
       <menu-bubble :editor="editor" :class="editorBubbleMenuClass" />
+    </div>
+    <div v-else-if="enableComment">
+      <comment-bubble :editor="editor" :class="editorBubbleMenuClass" />
     </div>
     <div v-show="!readonly">
       <menu-bar :editor="editor" :class="editorMenubarClass" />
@@ -59,6 +62,7 @@ import { useCodeView, useCharacterCount, useEditorStyle } from '@/hooks';
 
 import MenuBar from './MenuBar/index.vue';
 import MenuBubble from './MenuBubble/index.vue';
+import CommentBubble from './CommentBubble/index.vue';
 
 interface Props {
   extensions: Extensions;
@@ -89,6 +93,7 @@ export default defineComponent({
     EditorContent,
     MenuBar,
     MenuBubble,
+    CommentBubble
   },
 
   props: {
@@ -128,6 +133,10 @@ export default defineComponent({
       default: false,
     },
     readonly: {
+      type: Boolean,
+      default: false,
+    },
+    enableComment: {
       type: Boolean,
       default: false,
     },
@@ -233,8 +242,10 @@ export default defineComponent({
         editorProps: {
           attributes: {
             spellcheck: String(props.spellcheck),
-          }
+            
+          },
         },
+        editable: !props.readonly
       });
     });
 
