@@ -88,6 +88,7 @@ const extensions = [
     handleReqComment(comment) {
       console.log(comment)
       console.log('出来上传评论')
+      console.log(jbEditor.value.getJSON())
       return new Promise((resolve, reject) => {
         commentId++
         setTimeout(() => { resolve(`${commentId}`) }, 500)
@@ -98,12 +99,8 @@ const extensions = [
       console.log(commentId)
     }
   }),
+  
   HandleMethods.configure({
-    handleReqComment(comment) {
-      console.log(comment)
-      console.log('出来上传评论')
-
-    },
     handleCreateTask(task) {
       console.log(task)
       console.log('点击创建任务')

@@ -15,7 +15,7 @@ declare module "@tiptap/core" {
        */
       unsetComment: (commentId: string) => ReturnType;
 
-      reqComment: ({ }) => ReturnType;
+      reqComment: ({}) => ReturnType;
     };
   }
 }
@@ -36,6 +36,7 @@ export interface CommentStorage {
 
 const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
   name: "comment",
+  excludes:"",
   addOptions() {
     return {
       HTMLAttributes: {
@@ -75,9 +76,6 @@ const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
         parseHTML: (el) =>
           (el as HTMLSpanElement).getAttribute("data-comment-id"),
         renderHTML: (attrs) => ({ "data-comment-id": attrs.commentId }),
-      },
-      commentIds: {
-        default: []
       }
     };
   },
