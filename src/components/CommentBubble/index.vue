@@ -1,7 +1,7 @@
 <template>
     <bubble-menu v-if="editor" :editor="editor" v-show="activeMenu !== 'none'" :shouldShow="menuShouldShow">
         <div :class="{ 'el-tiptap-editor__menu-bubble--active': bubbleMenuEnable }" class="el-tiptap-editor__menu-bubble">
-            <add-comment-command-button :editor="editor" />
+            <add-comment-command-button :editor="editor" :isImage="activeMenu === 'image'" />
         </div>
     </bubble-menu>
 </template>
@@ -16,7 +16,8 @@ import AddCommentCommandButton from '@/components/MenuCommands/Comment/AddCommen
 
 const enum MenuType {
     NONE = 'none',
-    DEFAULT = 'default'
+    DEFAULT = 'default',
+    IMAGE = 'image'
 }
 
 export default defineComponent({
@@ -85,13 +86,18 @@ export default defineComponent({
             return $to.pos > $from.pos;
         },
         $_getCurrentMenuType(): MenuType {
-
             if (
                 this.editor.state.selection instanceof TextSelection ||
                 this.editor.state.selection instanceof AllSelection
             ) {
                 return MenuType.DEFAULT;
             }
+            let { node } = this.editor.state.selection;
+            if (node && node.type.name === 'image') {
+                console.log('当前选区是图片');
+                return MenuType.IMAGE;
+            } 
+
             return MenuType.NONE;
         },
 

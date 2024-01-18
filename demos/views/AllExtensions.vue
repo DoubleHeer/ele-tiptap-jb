@@ -81,7 +81,6 @@ const textExtensions = [
       console.log(data)
     }
   }),
-  Link,
   Image.configure(
     {
       uploadRequest() {
@@ -91,6 +90,7 @@ const textExtensions = [
       }
     }
   ),
+  Link,
 ];
 
 const paragraphExtensions = [

@@ -137,7 +137,6 @@ const TaskLink = Mark.create<LinkOptions>({
 
   addProseMirrorPlugins() {
     const handleTask = this.options.handleTask
-    console.log(this.options)
     return [
       new Plugin({
         props: {
@@ -146,13 +145,12 @@ const TaskLink = Mark.create<LinkOptions>({
             const marks = view.state.doc.nodeAt(pos)?.marks;
             if (!marks) return false;
             const clickedMark = marks.find(mark => mark.type.name === 'taskLink')
-            console.log(clickedMark)
             if (clickedMark && handleTask) {
               // 处理点击当前mark的逻辑
               handleTask(clickedMark.attrs.jaTaskData)
-              return false
+              return true;
             }
-            return true;
+            return false;
           },
         },
       }),

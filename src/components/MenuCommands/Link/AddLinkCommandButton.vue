@@ -16,6 +16,7 @@
       :append-to-body="true"
       width="400px"
       class="el-tiptap-edit-link-dialog"
+      :z-index="10000"
     >
       <el-form :model="linkAttrs" label-position="right" size="small">
         <el-form-item

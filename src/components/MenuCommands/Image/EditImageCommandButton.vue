@@ -15,6 +15,7 @@
       width="400px"
       class="el-tiptap-edit-image-dialog"
       @open="syncImageAttrs"
+      :z-index="10000"
     >
       <el-form :model="imageAttrs" label-position="top" size="small">
         <el-form-item

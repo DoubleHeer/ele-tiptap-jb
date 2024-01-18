@@ -576,10 +576,13 @@ p:has(task) {
   margin-bottom: 5px !important;
 }
 [contenteditable="false"] {
-.tip-comment {
-  position: relative;
-  display: inline-block;
-  border-bottom: 2px solid black;
-
-}
+  .tip-comment {
+    position: relative;
+    display: inline-block;
+    background-color: rgba(255, 182, 93, 0.20);
+    box-shadow: 0 2px 0 0 rgba(255, 182, 93, 0.5);
+    img {
+      border: none;
+    }
+  }
 }

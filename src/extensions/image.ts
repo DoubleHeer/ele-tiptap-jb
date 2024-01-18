@@ -11,6 +11,7 @@ import {
   DEFAULT_IMAGE_DISPLAY,
   DEFAULT_IMAGE_URL_REGEX,
 } from '@/constants';
+import { tr } from 'element-plus/es/locale';
 
 const Image = TiptapImage.extend({
   // https://github.com/ueberdosis/tiptap/issues/1206

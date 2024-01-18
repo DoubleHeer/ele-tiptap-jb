@@ -25,8 +25,12 @@
       </template>
     </el-popover>
 
-    <el-dialog v-model="imageUploadDialogVisible" :title="t('editor.extensions.Image.control.upload_image.title')"
-      :append-to-body="true" destroy-on-close>
+    <el-dialog 
+    v-model="imageUploadDialogVisible" 
+    :title="t('editor.extensions.Image.control.upload_image.title')"
+    :append-to-body="true" 
+    destroy-on-close
+      :z-index="10000">
       <el-upload :http-request="uploadImage" :show-file-list="false" class="el-tiptap-upload" action="#" drag
         accept="image/*">
         <div class="el-tiptap-upload__icon">

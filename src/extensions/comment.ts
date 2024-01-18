@@ -1,8 +1,7 @@
 import { Mark, mergeAttributes, Range } from "@tiptap/core";
 import { Mark as PMMark } from "@tiptap/pm/model";
-import CommandButton from '@/components/MenuCommands/CommandButton.vue';
-import type { Editor } from '@tiptap/core';
-import { TextSelection } from '@tiptap/pm/state';
+import { Plugin } from '@tiptap/pm/state'
+import { EditorView } from '@tiptap/pm/view';
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -16,7 +15,8 @@ declare module "@tiptap/core" {
        */
       unsetComment: (commentId: string) => ReturnType;
 
-      reqComment: ({ }) => ReturnType;
+      reqComment: ({}) => ReturnType;
+      showComment: ({}) => ReturnType;
     };
   }
 }
@@ -38,6 +38,7 @@ export interface CommentStorage {
 const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
   name: "comment",
   excludes: "",
+  priority:1001,
   addOptions() {
     return {
       HTMLAttributes: {
@@ -101,43 +102,47 @@ const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
     ];
   },
 
-  onSelectionUpdate() {
-    const { $from } = this.editor.state.selection;
+  // onSelectionUpdate() {
+  //   const { $from } = this.editor.state.selection;
 
-    const marks = $from.marks();
+  //   const marks = $from.marks();
 
-    if (!marks.length) {
-      this.storage.activeCommentId = null;
-      this.options.onCommentActivated(this.storage.activeCommentId);
-      return;
-    }
+  //   if (!marks.length) {
+  //     this.storage.activeCommentId = null;
+  //     this.options.onCommentActivated(this.storage.activeCommentId);
+  //     return;
+  //   }
 
-    const commentMark = this.editor.schema.marks.comment;
+  //   const commentMark = this.editor.schema.marks.comment;
 
-    const activeCommentMark = marks.find((mark) => mark.type === commentMark);
+  //   const activeCommentMark = marks.find((mark) => mark.type === commentMark);
 
-    this.storage.activeCommentId = activeCommentMark?.attrs.commentId || null;
+  //   this.storage.activeCommentId = activeCommentMark?.attrs.commentId || null;
 
-    this.options.onCommentActivated(this.storage.activeCommentId);
-  },
+  //   this.options.onCommentActivated(this.storage.activeCommentId);
+  // },
 
-  addStorage() {
-    return {
-      activeCommentId: null,
-    };
-  },
-
+  // addStorage() {
+  //   return {
+  //     activeCommentId: null,
+  //   };
+  // },
   addCommands() {
     return {
+      showComment: (commentId) =>
+      ({ commands }) => {
+        if (this.options.onCommentActivated) {
+          this.options.onCommentActivated(commentId)
+        }
+        return true
+      },
       reqComment: (options) =>
         ({ commands }) => {
           console.log(options)
           if (this.options.handleReqComment) {
             this.options.handleReqComment(options)
-            // .then((commentId) => {
-            //   this.editor.commands.setComment(commentId)  
-            // })
           }
+          return true
         },
       setComment:
         (commentId) =>
@@ -183,9 +188,31 @@ const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
             });
 
             return dispatch?.(tr);
-          },
+          }
     };
   },
+  addProseMirrorPlugins() {
+    const onCommentActivated = this.options.onCommentActivated
+    return [
+      new Plugin({
+        props: {
+          handleClick(view: EditorView, pos: number) {
+            // // 获取点击位置的mark
+            const marks = view.state.doc.nodeAt(pos)?.marks;
+            if (!marks) return false;
+            const activeCommentMark = marks.find((mark) => mark.type.name === "comment");
+            const activeCommentId = activeCommentMark?.attrs.commentId || null;
+            if (activeCommentMark && onCommentActivated) {
+              onCommentActivated(activeCommentId);
+              return false;
+            }
+            return false;
+          },
+        },
+      })
+    ];
+  },
+
 });
 
 export default CommentExtension;

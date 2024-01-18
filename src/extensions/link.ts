@@ -39,7 +39,7 @@ const Link = TiptapLink.extend({
             );
 
             view.dispatch(transaction);
-            return true;
+            return false;
           },
         },
       }),
