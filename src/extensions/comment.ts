@@ -2,6 +2,7 @@ import { Mark, mergeAttributes, Range } from "@tiptap/core";
 import { Mark as PMMark } from "@tiptap/pm/model";
 import CommandButton from '@/components/MenuCommands/CommandButton.vue';
 import type { Editor } from '@tiptap/core';
+import { TextSelection } from '@tiptap/pm/state';
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -15,7 +16,7 @@ declare module "@tiptap/core" {
        */
       unsetComment: (commentId: string) => ReturnType;
 
-      reqComment: ({}) => ReturnType;
+      reqComment: ({ }) => ReturnType;
     };
   }
 }
@@ -36,7 +37,7 @@ export interface CommentStorage {
 
 const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
   name: "comment",
-  excludes:"",
+  excludes: "",
   addOptions() {
     return {
       HTMLAttributes: {
@@ -132,45 +133,25 @@ const CommentExtension = Mark.create<CommentOptions, CommentStorage>({
         ({ commands }) => {
           console.log(options)
           if (this.options.handleReqComment) {
-            this.options.handleReqComment(options).then(commentId => {
-              this.editor.commands.setComment(commentId)
-            })
+            this.options.handleReqComment(options)
+            // .then((commentId) => {
+            //   this.editor.commands.setComment(commentId)  
+            // })
           }
         },
       setComment:
         (commentId) =>
           ({ commands }) => {
             if (!commentId) return false;
+            // const { doc } = this.editor.state;
+            // const { from, to } = this.editor.state.selection // 获取选区的开始和结束位置
+            // console.log(from, to)
+            // const selection = TextSelection.create(doc, from, to);
+            // this.editor.view.dispatch(
+            //   this.editor.state.tr.setSelection(selection)
+            // );
+            commands.setMark("comment", { commentId })
 
-            const { from, to } = this.editor.state.selection // 获取选区的开始和结束位置
-            const selection = this.editor.state.selection;
-            console.log(this.editor.state.selection)
-            const hasMark = this.editor.state.doc.rangeHasMark(from, to, this.editor.schema.marks["comment"])
-
-            console.log(hasMark)
-            let marks = []
-
-            if (selection instanceof Selection) {
-              const { $from, $to } = selection
-              this.editor.state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-                marks.push(...node.marks)
-              })
-            }
-            
-            console.log(marks)
-
-            // // 获取所有的 marks
-            // let marks = this.editor.state.schema.marks;
-            // console.log(marks)
-            // // 遍历所有的 marks
-            // for (let markType in marks) {
-            //   // 使用 "state.doc.rangeHasMark" 方法检查 selection 中是否包含 mark
-            //   if (this.editor.state.doc.rangeHasMark(from, to, marks[markType])) {
-            //     console.log(`Selection contains mark: ${markType}`);
-            //   }
-            // }
-
-            commands.setMark("comment", { commentId });
           },
       unsetComment:
         (commentId) =>

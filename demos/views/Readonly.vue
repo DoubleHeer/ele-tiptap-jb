@@ -2,6 +2,8 @@
   <div class="el-tiptap-editor__wrapper">
     <button @click="deleteComment">删除评论</button>
     <button @click="changeReadOnly">修改只读状态</button>
+    <button @click="addCommentM">添加评论数据</button>
+    
     <el-tiptap :extensions="extensions" :content="content" :readonly="readonly" :enableComment="true" @onCreate="onCreate" />
   </div>
 </template>
@@ -89,10 +91,11 @@ const extensions = [
       console.log(comment)
       console.log('出来上传评论')
       console.log(jbEditor.value.getJSON())
-      return new Promise((resolve, reject) => {
-        commentId++
-        setTimeout(() => { resolve(`${commentId}`) }, 500)
-      })
+      // return new Promise((resolve, reject) => {
+      //   commentId++
+      //   setTimeout(() => { resolve(`${commentId}`) }, 500)
+      // })
+     
     },
     onCommentActivated(commentId) {
       console.log('点击激活评论块')
@@ -128,4 +131,10 @@ const changeReadOnly = () => {
   console.log('点击切换只读')
   readonly.value = !readonly.value;
 };
+const addCommentM = () => {
+  //暴露到外部添加评论
+  console.log('调用添加评论')
+  commentId++
+  jbEditor.value.commands.setComment(`${commentId}`)
+}
 </script>

@@ -3,7 +3,7 @@ import { Extension } from '@tiptap/core';
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     handleMethods: {
-        reqCreateTask: ({}) => ReturnType;
+      reqCreateTask: ({}) => ReturnType;
     };
   }
 }
@@ -13,13 +13,12 @@ const HandleMethods = Extension.create({
 
   addOptions() {
     return {
-        handleReqComment:null,
-        handleReqCreateTask:null
+      handleReqCreateTask: null
     };
   },
   addCommands() {
     return {
-        reqCreateTask: (options) =>
+      reqCreateTask: (options) =>
         ({ commands }) => {
           console.log(options)
           if (this.options.handleReqCreateTask) {
