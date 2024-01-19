@@ -100,7 +100,7 @@ const extensions = [
   }),
   
   HandleMethods.configure({
-    handleCreateTask(task) {
+    handleReqCreateTask(task) {
       console.log(task)
       console.log('点击创建任务')
     }
